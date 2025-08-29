@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About • Vegetative Area Analysis</title>
+  <meta name="description" content="Explore vegetation health, monitor changes, and visualize insights through satellite imagery." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#111732;
+      --muted:#94a3b8;
+      --text:#e2e8f0;
+      --brand: #22c55e; /* green */
+      --brand-2:#16a34a;
+      --accent:#60a5fa; /* blue */
+      --ring: 0 0 0 3px rgba(34,197,94,.25);
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --grid-gap: 22px;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      background: url('https://images.unsplash.com/photo-1634176866089-b633f4aec882?w=1920&auto=format&fit=crop&q=80&ixlib=rb-4.1.0') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+    }
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text);
+    }
+
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{width:min(1120px, 92vw); margin-inline:auto}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(to bottom, rgba(11,16,32,.9), rgba(11,16,32,.6));
+      border-bottom:1px solid rgba(148,163,184,.12);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 0}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px}
+    .logo{width:36px; height:36px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg, var(--brand), var(--accent)); box-shadow: var(--shadow)}
+    .logo svg{width:22px; height:22px; color:white}
+    .nav a.btn{background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:white; padding:10px 16px; border-radius:12px; font-weight:600; box-shadow:var(--shadow)}
+    .nav a.btn:hover{filter:brightness(1.05)}
+
+    /* Hero */
+    .hero{display:grid; gap:24px; padding:56px 0 28px}
+    .hero h1{font-size:clamp(28px, 4vw, 44px); line-height:1.15; margin:0}
+    .hero p{color:var(--muted); font-size:clamp(14px, 2vw, 18px)}
+    .hero .cards{display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:var(--grid-gap)}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); border:1px solid rgba(148,163,184,.16); border-radius:var(--radius); padding:18px 18px 16px; box-shadow: var(--shadow)}
+    .card strong{display:block; margin-top:8px}
+    .badge{display:inline-flex; align-items:center; gap:8px; color:#0b1b12; background:rgba(34,197,94,.9); border:1px solid rgba(34,197,94,.6); padding:6px 10px; border-radius:20px; font-size:12px; font-weight:700}
+
+    /* Sections */
+    section{padding:30px 0}
+    h2{font-size:clamp(22px, 3vw, 30px); margin:0 0 14px}
+    .muted{color:var(--muted)}
+
+    /* Feature grid */
+    .grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:var(--grid-gap)}
+    .feature{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); border:1px solid rgba(148,163,184,.16); border-radius:var(--radius); padding:18px; display:flex; gap:12px}
+    .feature svg{flex:0 0 28px; color:var(--brand)}
+
+    /* Metrics */
+    .metric{border-radius:14px; border:1px dashed rgba(148,163,184,.24); padding:14px}
+    .metric code{background:rgba(2,6,23,.6); padding:2px 6px; border-radius:6px; color:#a7f3d0}
+
+    /* Timeline */
+    .timeline{display:grid; grid-template-columns: 28px 1fr; gap:14px}
+    .dot{width:14px; height:14px; border-radius:50%; background:linear-gradient(135deg,var(--brand),var(--accent)); box-shadow:0 0 0 4px rgba(34,197,94,.2)}
+    .step{margin-bottom:18px; padding-bottom:12px; border-bottom:1px dashed rgba(148,163,184,.2)}
+
+    /* Demo panel */
+    .panel{border:1px solid rgba(148,163,184,.16); border-radius:var(--radius); padding:18px; background:linear-gradient(180deg, rgba(96,165,250,.06), rgba(96,165,250,0)); box-shadow:var(--shadow)}
+    .legend{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .legend span{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--muted)}
+    .swatch{width:10px; height:10px; border-radius:2px}
+
+    /* FAQ */
+    details{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); border:1px solid rgba(148,163,184,.16); border-radius:12px; padding:14px 16px}
+    summary{cursor:pointer; font-weight:600}
+
+    /* Footer */
+    footer{border-top:1px solid rgba(148,163,184,.16); padding:28px 0 50px; color:var(--muted); font-size:14px}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+    /* Small helper classes */
+    .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    .center{display:grid; place-items:center}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand" aria-label="Vegetative Area Analysis">
+        <div class="logo" aria-hidden="true">
+          <!-- Leaf + pixel icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11c0 4 2 6 5 6s5-2 5-6c0-5-5-8-5-8s-5 3-5 8Z"/><path d="M12 3v14"/></svg>
+        </div>
+        Vegetative Area Analysis
+      </div>
+      <nav class="row" aria-label="Primary">
+       <nav class="home"  ><a href="/">Home</a></nav> 
+        <a href="#why">Why</a>
+        <a href="#metrics">Metrics</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn" href="/visualize">Get Started</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="about-title">
+      <div class="badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+        About This Project
+      </div>
+      <h1 id="about-title">Vegetative Area Analysis using Satellite Imagery</h1>
+      <p>Explore vegetation health, monitor changes across seasons, and visualize ecological insights using satellite data. This page explains our mission, the science behind the metrics, and the workflow that turns pixels into decisions.</p>
+
+      <div class="cards" role="list">
+        <article class="card" role="listitem">
+          <strong>Mission</strong>
+          We make vegetation monitoring accessible, accurate, and visually clear for land managers, researchers, and communities.
+        </article>
+        <article class="card" role="listitem">
+          <strong>Approach</strong>
+          We combine open satellite data with reproducible processing and intuitive design to deliver actionable maps.
+        </article>
+        <article class="card" role="listitem">
+          <strong>Focus Areas</strong>
+          Agriculture, forestry, wetlands, restoration projects, urban greenery, and disaster impact assessment.
+        </article>
+      </div>
+    </section>
+
+    <!-- Why section -->
+    <section id="why" aria-labelledby="why-title">
+      <h2 id="why-title">Why Vegetation Analysis?</h2>
+      <p class="muted">Five practical outcomes that stakeholders care about.</p>
+      <div class="grid">
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18"/><path d="M12 3v18"/></svg>
+          <div>
+            <strong>Crop Health & Yield</strong>
+            <div class="muted">Detect stress early, optimize irrigation and fertilization, and forecast yield.</div>
+          </div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/></svg>
+          <div>
+            <strong>Forest Monitoring</strong>
+            <div class="muted">Track canopy density, fragmentation, and post-disturbance recovery.</div>
+          </div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+          <div>
+            <strong>Change Detection</strong>
+            <div class="muted">Quantify seasonal cycles and long‑term trends in vegetation health.</div>
+          </div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <div>
+            <strong>Disaster Assessment</strong>
+            <div class="muted">Estimate burn severity, drought impact, and flood recovery at scale.</div>
+          </div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+          <div>
+            <strong>Urban Green Spaces</strong>
+            <div class="muted">Measure canopy cover and support equitable, climate‑resilient planning.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics -->
+    <section id="metrics" aria-labelledby="metrics-title">
+      <h2 id="metrics-title">Key Vegetation Metrics</h2>
+      <p class="muted">We use well‑known spectral indices and biophysical proxies.</p>
+      <div class="grid">
+        <div class="metric">
+          <strong>NDVI — Normalized Difference Vegetation Index</strong>
+          <div class="muted">Greenness proxy from red & NIR bands.</div>
+          <div><code>(NIR - Red) / (NIR + Red)</code></div>
+        </div>
+        <div class="metric">
+          <strong>EVI — Enhanced Vegetation Index</strong>
+          <div class="muted">Improves sensitivity in high biomass areas.</div>
+          <div><code>G * (NIR - Red) / (NIR + C1*Red - C2*Blue + L)</code></div>
+        </div>
+        <div class="metric">
+          <strong>NDWI — Normalized Difference Water Index</strong>
+          <div class="muted">Moisture indicator using NIR & SWIR.</div>
+          <div><code>(NIR - SWIR) / (NIR + SWIR)</code></div>
+        </div>
+        <div class="metric">
+          <strong>LAI — Leaf Area Index (modelled)</strong>
+          <div class="muted">Canopy structure proxy derived from reflectance/indices.</div>
+        </div>
+        <div class="metric">
+          <strong>Burn Severity (dNBR)</strong>
+          <div class="muted">Pre‑/post‑fire NBR difference.</div>
+          <div><code>NBR<sub>pre</sub> − NBR<sub>post</sub></code></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow -->
+    <section id="workflow" aria-labelledby="flow-title">
+      <h2 id="flow-title">From Pixels to Insights: Workflow</h2>
+      <div class="timeline">
+        <div class="dot" aria-hidden="true"></div>
+        <div class="step">
+          <strong>1) Data Sourcing</strong>
+          <div class="muted">Sentinel‑2, Landsat, and commercial imagery; cloud & QA masks included.</div>
+        </div>
+        <div class="dot" aria-hidden="true"></div>
+        <div class="step">
+          <strong>2) Pre‑processing</strong>
+          <div class="muted">Atmospheric correction, resampling, compositing, and cloud/shadow removal.</div>
+        </div>
+        <div class="dot" aria-hidden="true"></div>
+        <div class="step">
+          <strong>3) Index Computation</strong>
+          <div class="muted">NDVI/EVI/NDWI and other band math computed per scene or composite.</div>
+        </div>
+        <div class="dot" aria-hidden="true"></div>
+        <div class="step">
+          <strong>4) Change Analysis</strong>
+          <div class="muted">Time‑series smoothing, anomalies vs. baseline, and thresholds.</div>
+        </div>
+        <div class="dot" aria-hidden="true"></div>
+        <div class="step">
+          <strong>5) Visualization & Reporting</strong>
+          <div class="muted">Interactive maps, charts, and exportable summaries for stakeholders.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Example visualization (static for the About page) -->
+    <section aria-labelledby="demo-title">
+      <h2 id="demo-title">Sample Visualization</h2>
+      <div class="panel">
+        <svg viewBox="0 0 640 240" role="img" aria-label="Sample NDVI time series chart" preserveAspectRatio="xMidYMid meet" width="100%" height="auto">
+          <defs>
+            <linearGradient id="grad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="rgba(34,197,94,0.7)"/>
+              <stop offset="100%" stop-color="rgba(34,197,94,0)"/>
+            </linearGradient>
+          </defs>
+          <!-- Axes -->
+          <g stroke="rgba(148,163,184,.4)" stroke-width="1">
+            <path d="M40 200 H600"/>
+            <path d="M40 20 V200"/>
+            <!-- grid lines -->
+            <g stroke-dasharray="3 6">
+              <path d="M40 160 H600"/>
+              <path d="M40 120 H600"/>
+              <path d="M40 80 H600"/>
+              <path d="M40 40 H600"/>
+            </g>
+          </g>
+          <!-- Area + line -->
+          <path d="M40 180 C 140 120, 200 60, 260 80 S 380 180, 440 120 560 60 600 100 L600 200 L40 200 Z" fill="url(#grad)"/>
+          <path d="M40 180 C 140 120, 200 60, 260 80 S 380 180, 440 120 560 60 600 100" stroke="var(--brand)" stroke-width="3" fill="none"/>
+          <!-- Points -->
+          <g fill="var(--accent)">
+            <circle cx="140" cy="120" r="4"/>
+            <circle cx="200" cy="60" r="4"/>
+            <circle cx="260" cy="80" r="4"/>
+            <circle cx="380" cy="180" r="4"/>
+            <circle cx="440" cy="120" r="4"/>
+            <circle cx="560" cy="60" r="4"/>
+            <circle cx="600" cy="100" r="4"/>
+          </g>
+        </svg>
+        <div class="legend">
+          <span><span class="swatch" style="background:var(--brand)"></span> NDVI</span>
+          <span><span class="swatch" style="background:var(--accent)"></span> Observations</span>
+          <span><span class="swatch" style="background:linear-gradient(135deg, var(--brand), var(--accent))"></span> Seasonal trend</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">FAQ</h2>
+      <div class="grid">
+        <details>
+          <summary>Which satellites are supported?</summary>
+          <div class="muted">Commonly Sentinel‑2 (10m), Landsat 8/9 (30m), and others where licensing permits.</div>
+        </details>
+        <details>
+          <summary>How often can I get updates?</summary>
+          <div class="muted">Every 5–10 days for Sentinel‑2 in many regions; daily if fusing multiple sources.</div>
+        </details>
+        <details>
+          <summary>Do clouds ruin the analysis?</summary>
+          <div class="muted">We apply cloud/shadow masks and temporal compositing to reduce noise.</div>
+        </details>
+        <details>
+          <summary>Can I export the results?</summary>
+          <div class="muted">Yes—maps, charts, and tabular summaries (CSV/GeoJSON/PNG) can be exported.</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Contact / CTA -->
+    <section id="contact" aria-labelledby="cta-title">
+      <h2 id="cta-title">Ready to explore your area?</h2>
+      <p class="muted">Tell us about your location, time range, and goals. We’ll configure a workflow and share a demo.</p>
+      <form class="card" onsubmit="event.preventDefault(); alert('Thanks! We\'ll reach out soon.');" aria-label="Contact form">
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:12px">
+          <label> <span class="sr-only">Name</span>
+            <input required type="text" name="name" placeholder="Your name" aria-label="Your name" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:#0b1327; color:var(--text)"/>
+          </label>
+          <label> <span class="sr-only">Email</span>
+            <input required type="email" name="email" placeholder="Email" aria-label="Email" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:#0b1327; color:var(--text)"/>
+          </label>
+          <label style="grid-column:1/-1"> <span class="sr-only">Message</span>
+            <textarea name="message" rows="4" placeholder="What area do you want to analyze? What questions do you have?" aria-label="Message" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:#0b1327; color:var(--text)"></textarea>
+          </label>
+        </div>
+        <div class="row" style="justify-content:space-between; margin-top:10px">
+          <label class="row" style="gap:8px; color:var(--muted); font-size:14px">
+            <input type="checkbox" required aria-label="Agree to terms"/>
+            I agree to be contacted about this inquiry.
+          </label>
+          <button type="submit" class="btn" style="background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:white; padding:10px 16px; border-radius:12px; border:none; font-weight:700; box-shadow:var(--shadow); cursor:pointer">Submit</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> Vegetative Area Analysis • Built for insight, grounded in science.
+    </div>
+  </footer>
+
+  <script>
+    // Update footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

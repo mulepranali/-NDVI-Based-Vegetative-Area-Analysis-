@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home • Vegetative Area Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    body,html{height:100%; margin:0; font-family:Inter, sans-serif; color:#f1f5f9}
+
+    body{
+      background: url('https://images.unsplash.com/photo-1634176866089-b633f4aec882?w=1920&auto=format&fit=crop&q=80&ixlib=rb-4.1.0') no-repeat center center/cover;
+    }
+
+    .overlay{
+      position:absolute; inset:0;
+      background:rgba(0,0,0,0.55);
+      z-index:0;
+    }
+
+    header{
+      position:relative;
+      z-index:10;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 8%;
+      backdrop-filter: blur(6px);
+      background:rgba(0,0,0,0.4);
+    }
+    .brand{display:flex; align-items:flex-start; gap:10px; font-weight:700;}
+    .logo{width:36px; height:36px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg, #22c55e, #60a5fa); box-shadow:0 6px 20px rgba(0,0,0,.35)}
+    .logo svg{width:22px; height:22px; color:white}
+    .brand-text{display:flex; flex-direction:column}
+    .brand-text span:first-child{font-size:18px; font-weight:700; color:#f1f5f9}
+    .brand-text span:last-child{font-size:12px; color:#cbd5e1}
+
+    nav a{
+      margin-left:22px; color:#f1f5f9; font-weight:500; text-decoration:none;
+    }
+    nav a:hover{color:#22c55e}
+
+    .content{
+      position:relative;
+      text-align:center;
+      max-width:800px;
+      margin:0 auto;
+      padding:120px 40px;
+      z-index:5;
+    }
+    h1{font-size:clamp(32px,6vw,60px); margin:0 0 20px}
+    p{font-size:clamp(16px,2vw,22px); margin:0 0 28px; color:#e2e8f0}
+
+    a.btn{
+      background:linear-gradient(135deg,#22c55e,#15803d);
+      padding:14px 28px; border-radius:12px;
+      color:white; font-weight:700; text-decoration:none;
+      box-shadow:0 8px 24px rgba(0,0,0,.35);
+    }
+    a.btn:hover{filter:brightness(1.05)}
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <!-- Same logo as About page -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11c0 4 2 6 5 6s5-2 5-6c0-5-5-8-5-8s-5 3-5 8Z"/><path d="M12 3v14"/></svg>
+      </div>
+      <div class="brand-text">
+        <span>VegetationApp</span>
+        <span>NDVI & Satellite Analysis</span>
+      </div>
+    </div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/visualize">Visualize</a>
+    </nav>
+  </header>
+
+  <div class="content">
+    <h1>Vegetative Area Analysis</h1>
+    <p>Explore vegetation health, monitor changes, and visualize insights through satellite imagery.</p>
+    <a href="/about" class="btn">Learn More</a>
+  </div>
+</body>
+</html>

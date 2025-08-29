@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vegetation Analysis</title>
+<style>
+/* === Alert styling for missing fields === */
+.error-alert {
+  display: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #ffe0e0;
+  color: #a10000;
+  font-weight: bold;
+  border: 1px solid #ff5c5c;
+}
+.missing-input {
+  border: 2px solid red !important;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+/* === Your existing CSS starts here, unchanged except for keeping length === */
+/* Your original CSS from the first page */
+    :root{
+      --bg:#fbfbfc;
+      --muted:#54606a;
+      --accent-1: #ffd9e2;
+      --accent-2: #d6f6ea;
+      --accent-3: #dbeafe;
+      --primary: #1f3c88;
+      --card: #ffffff;
+      --glass: rgba(255,255,255,0.7);
+      --radius: 14px;
+      --shadow: 0 8px 30px rgba(20,30,50,0.06);
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    /* ... rest of your CSS unchanged ... */
+    
+
+     
+    html,body{
+      height:100%;
+      margin:0;
+      background: url('https://images.unsplash.com/photo-1634176866089-b633f4aec882?w=1920&auto=format&fit=crop&q=80&ixlib=rb-4.1.0') no-repeat center center/cover; 
+      /* background: linear-gradient(180deg, var(--bg) 0%, #fff 100%);    */
+      color:var(--muted);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Header */
+    /* header.site-header{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 36px;
+      box-sizing:border-box;
+      background: linear-gradient(90deg, var(--accent-3) 0%, var(--accent-2) 100%);
+      box-shadow: 0 3px 12px rgba(10,20,40,0.06);
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(6px);
+    } */
+     header.site-header{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 36px;
+      box-sizing:border-box;
+      /* background: linear-gradient(90deg, var(--accent-3) 0%, var(--accent-2) 100%); */
+      background: rgba(0,0,0,0.4);
+      box-shadow: 0 3px 12px rgba(10,20,40,0.06);
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(6px);
+    }
+
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      text-decoration:none;
+      color:var(--primary);
+    }
+
+    .logo {
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      background: linear-gradient(135deg,#ffd9e2 0%, #dbeafe 100%);
+      box-shadow: 0 6px 18px rgba(31,60,136,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--primary);
+      font-size:18px;
+    }
+
+    .brand h1{
+      font-size:18px;
+      margin:0;
+      letter-spacing:0.2px;
+    }
+
+    /* Nav */
+    nav.nav {
+      display:flex;
+      gap:28px;
+      align-items:center;
+    }
+    .panel{
+    background:var(--card);
+    border-radius: var(--radius);
+    padding:22px;
+    box-shadow:var(--shadow);
+    min-height:420px;
+  }
+
+
+    nav.nav a{
+      /* color:var(--primary); */
+      color:White;
+      text-decoration:none;
+      font-weight:600;
+      position:relative;
+      padding:6px 2px;
+      transition: color .22s ease;
+    }
+
+    nav.nav a:hover{ color:#22c55e; }
+
+    nav.nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      height:3px;
+      width:0%;
+      background: linear-gradient(90deg,#1f3c88 0%, #4b93f6 100%);
+      border-radius:2px;
+      transition: width .25s cubic-bezier(.2,.8,.2,1);
+    }
+
+    nav.nav a:hover::after{ width:100%; }
+
+    .cta {
+      background: linear-gradient(90deg,#1f3c88,#4b93f6);
+      color:white;
+      padding:8px 14px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:14px;
+      box-shadow: 0 6px 18px rgba(31,60,136,0.12);
+      text-decoration:none;
+      margin-left:12px;
+    }
+
+    /* Main layout */
+    main.container{
+      max-width:1200px;
+      margin:36px auto;
+      padding:0 20px;
+      box-sizing:border-box;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:start;
+    }
+
+    .panel{
+      background:var(--card);
+      border-radius: var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow);
+      min-height:420px;
+    }
+
+    .hero-title{
+      margin:0 0 12px 0;
+      color:#16324a;
+      font-size:20px;
+      letter-spacing: -0.2px;
+    }
+
+    .hero-sub{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .map-placeholder{
+      width:100%;
+      height:360px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg, rgba(220,235,255,0.7), rgba(245,255,250,0.6));
+      border: 1px dashed rgba(30,60,110,0.06);
+      color:#2a4a6b;
+      overflow:hidden;
+    }
+
+    .map-placeholder img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:10px;
+    }
+
+    /* Right: Controls/Stats */
+    .side {
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--glass), #fff);
+      border-radius:12px;
+      padding:16px;
+      box-shadow: 0 6px 20px rgba(10,20,40,0.04);
+    }
+
+    .input-row{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .file-input {
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .file-input label {
+      flex:1;
+      background:#fff;
+      border-radius:10px;
+      padding:10px;
+      border:1px dashed rgba(30,60,110,0.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .file-input input[type="file"]{
+      display:none;
+    }
+
+    .file-name {
+      font-size:13px;
+      color:var(--muted);
+      padding-left:8px;
+    }
+
+    .btn {
+      display:inline-block;
+      padding:10px 14px;
+      background: linear-gradient(90deg,#1f3c88,#4b93f6);
+      color:white;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+      box-shadow: 0 8px 24px rgba(31,60,136,0.12);
+    }
+
+    .stat-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:12px;
+    }
+
+    .stat {
+      flex:1;
+      background:linear-gradient(180deg, #fff, #fbfdff);
+      border-radius:10px;
+      padding:12px;
+      text-align:center;
+      border:1px solid rgba(10,30,60,0.03);
+    }
+
+    .stat h3{ margin:0; color:#1f3c88; font-size:16px; }
+    .stat p{ margin:6px 0 0 0; color:var(--muted); font-weight:700; }
+
+    footer{
+      max-width:1200px;
+      margin:30px auto 60px;
+      padding:0 20px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+    }
+
+    @media (max-width:980px){
+      .grid { grid-template-columns: 1fr; }
+      nav.nav { display:none; }
+      .site-header { padding:12px 18px; }
+      .map-placeholder{ height:300px; }
+    }
+  
+/* …(keep all your other original CSS here, untouched) … */
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="#">
+    <div class="logo">VA</div>
+    <div>
+      <h1 style="margin:0;font-size:16px;color:#eff1f3">VegetationApp</h1>
+      <div style="font-size:12px;color:#eff1f3;margin-top:3px">NDVI & Satellite Analysis</div>
+    </div>
+  </a>
+  <nav class="nav">
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/visualize">Visualize</a>
+    <!-- <a class="cta" href="#">Get Started</a> -->
+  </nav>
+</header>
+
+<main class="container">
+  <div class="grid">
+    <section class="panel">
+      <h2 class="hero-title">Visualize Vegetation</h2>
+      <p class="hero-sub">Upload B04 and B08 files and press "Analyze".</p>
+      <div class="map-placeholder">
+        <img id="resultImage" src="/static/placeholder.png" alt="NDVI Preview">
+        <div class="map-placeholder" id="mapArea">
+          <div style="text-align:center">
+            <svg width="72" height="72" viewBox="0 0 24 24" fill="none" style="opacity:.9">
+              <path d="M12 2C8 2 5 5 5 9c0 6 7 13 7 13s7-7 7-13c0-4-3-7-7-7z" stroke="#1f3c88" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="9" r="2.2" fill="#4b93f6" />
+            </svg>
+            <div style="font-weight:700;margin-top:10px;color:#12305a">NDVI Preview</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:6px">Processed image will appear here</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="card">
+        <div style="font-size:13px;color:var(--muted)">Analyze Images</div>
+        <div style="font-weight:700;color:#16324a">Upload B04 & B08</div>
+
+        <!-- Error alert box -->
+        <div id="alertBox" class="error-alert"></div>
+
+        <form id="ndviForm" style="margin-top:14px">
+          <div class="input-row">
+            <div class="file-input">
+              <label for="redFile">
+                <span>Red Band (B04)</span>
+                <span class="file-name" id="redName">No file chosen</span>
+              </label>
+              <input id="redFile" type="file" name="red_band" accept=".tif,.tiff">
+            </div>
+            <div class="file-input">
+              <label for="nirFile">
+                <span>NIR Band (B08)</span>
+                <span class="file-name" id="nirName">No file chosen</span>
+              </label>
+              <input id="nirFile" type="file" name="nir_band" accept=".tif,.tiff">
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+            <button type="submit" class="btn analyze">Analyze</button>
+            <button type="reset" class="btn clear" style="background:#f1f4f8;color:#12305a;box-shadow:none">Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;color:var(--muted)">Vegetation Coverage</div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="stat"><h3>Healthy</h3><p id="healthyPct">—</p>%</div>
+          <div class="stat"><h3>Moderate</h3><p id="moderatePct">—</p>%</div>
+          <div class="stat"><h3>Unhealthy</h3><p id="unhealthyPct">—</p>%</div>
+        </div>
+        <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+          <strong>Pixel area:</strong> <span id="pixelArea">—</span> m²
+        </div>
+      </div>
+
+      <div class="card" style="text-align:center;">
+        <div style="font-size:13px;color:var(--muted)">Actions</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+          <a class="btn view" id="viewBtn" href="#" target="_blank">View Image</a>
+          <a class="btn download" id="downloadBtn" href="#">Download Image</a>
+          <a class="btn report" id="reportBtn" href="#">Download Report PDF</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer>© <span id="year"></span> VegetationApp — NDVI & satellite vegetation analysis.</footer>
+
+<script>
+// Year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Elements
+const ndviForm = document.getElementById('ndviForm');
+const alertBox = document.getElementById('alertBox');
+const redFile = document.getElementById('redFile');
+const nirFile = document.getElementById('nirFile');
+const redName = document.getElementById('redName');
+const nirName = document.getElementById('nirName');
+
+// File name display + clear missing state
+redFile.addEventListener('change', e => {
+  redName.textContent = e.target.files.length ? e.target.files[0].name : 'No file chosen';
+  redFile.classList.remove('missing-input');
+  alertBox.style.display = 'none';
+});
+nirFile.addEventListener('change', e => {
+  nirName.textContent = e.target.files.length ? e.target.files[0].name : 'No file chosen';
+  nirFile.classList.remove('missing-input');
+  alertBox.style.display = 'none';
+});
+
+// Form submit
+ndviForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  let missing = false;
+  redFile.classList.remove('missing-input');
+  nirFile.classList.remove('missing-input');
+
+  if (redFile.files.length === 0) {
+    redFile.classList.add('missing-input');
+    missing = true;
+  }
+  if (nirFile.files.length === 0) {
+    nirFile.classList.add('missing-input');
+    missing = true;
+  }
+
+  if (missing) {
+    alertBox.textContent = '⚠ Please upload both Red Band (B04) and NIR Band (B08) before analyzing.';
+    alertBox.style.display = 'block';
+    return;
+  }
+
+  alertBox.style.display = 'none';
+
+  // Send to backend
+  const formData = new FormData(ndviForm);
+  const response = await fetch('/analyze', { method: 'POST', body: formData });
+  const data = await response.json();
+
+  if (data.error) {
+    alertBox.textContent = data.error;
+    alertBox.style.display = 'block';
+    return;
+  }
+
+  // Update UI with results
+  document.getElementById('resultImage').src = data.image_url + '?t=' + Date.now();
+  document.getElementById('healthyPct').textContent = data.stats.healthy_pct;
+  document.getElementById('moderatePct').textContent = data.stats.moderate_pct;
+  document.getElementById('unhealthyPct').textContent = data.stats.unhealthy_pct;
+  document.getElementById('pixelArea').textContent = data.stats.pixel_area_m2;
+  
+  // Set up button actions
+  document.getElementById('viewBtn').onclick = () => window.open('/result_image', '_blank');
+  document.getElementById('downloadBtn').onclick = () => window.location.href = '/download_image';
+  document.getElementById('reportBtn').onclick = () => window.location.href = '/download_report';
+});
+
+// Update UI with results
+document.getElementById('resultImage').src = data.image_url + '?t=' + Date.now();
+document.getElementById('healthyPct').textContent = data.stats.healthy_pct;
+document.getElementById('moderatePct').textContent = data.stats.moderate_pct;
+document.getElementById('unhealthyPct').textContent = data.stats.unhealthy_pct;
+document.getElementById('pixelArea').textContent = data.stats.pixel_area_m2;
+
+// Set up button actions
+document.getElementById('viewBtn').onclick = () => window.open(data.image_url, '_blank');
+document.getElementById('downloadBtn').onclick = () => window.location.href = data.image_url;
+document.getElementById('reportBtn').onclick = () => window.location.href = '/download_report'; // You'll need to create this endpoint
+
+document.querySelector('.clear').addEventListener('click', () => {
+  ndviForm.reset();
+  document.getElementById('resultImage').src = '/static/placeholder.png';
+  document.getElementById('healthyPct').textContent = '—';
+  document.getElementById('moderatePct').textContent = '—';
+  document.getElementById('unhealthyPct').textContent = '—';
+  document.getElementById('pixelArea').textContent = '—';
+  redName.textContent = 'No file chosen';
+  nirName.textContent = 'No file chosen';
+  redFile.classList.remove('missing-input');
+  nirFile.classList.remove('missing-input');
+  alertBox.style.display = 'none';
+  
+  // Reset buttons
+  document.getElementById('viewBtn').onclick = null;
+  document.getElementById('downloadBtn').onclick = null;
+  document.getElementById('reportBtn').onclick = null;
+});
+
+// Clear/reset form
+document.querySelector('.clear').addEventListener('click', () => {
+  ndviForm.reset();
+  document.getElementById('resultImage').src = '/static/placeholder.png';
+  document.getElementById('healthyPct').textContent = '—';
+  document.getElementById('moderatePct').textContent = '—';
+  document.getElementById('unhealthyPct').textContent = '—';
+  document.getElementById('pixelArea').textContent = '—';
+  redName.textContent = 'No file chosen';
+  nirName.textContent = 'No file chosen';
+  redFile.classList.remove('missing-input');
+  nirFile.classList.remove('missing-input');
+  alertBox.style.display = 'none';
+  
+  // Reset buttons
+  document.getElementById('viewBtn').onclick = null;
+  document.getElementById('downloadBtn').onclick = null;
+  document.getElementById('reportBtn').onclick = null;
+});
+</script>
+
+</body>
+</html>
