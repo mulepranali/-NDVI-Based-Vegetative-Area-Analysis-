@@ -1,0 +1,10 @@
+streamlit
+rasterio
+numpy
+matplotlib
+opencv-python
+reportlab
+   
+
+   authorixation code = "4/1AVMBsJh15NGpyHpqA_34aRI6uMwyvi9CBbfHrsWzmQDjVN_-hlLtrZkF3-U"
+   and project name = " mhrsac-project-3 "
